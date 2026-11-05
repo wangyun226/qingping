@@ -1,294 +1,321 @@
 name: Build QingPing APK
-​on:
-push:
-workflow_dispatch:
-​jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- name: Set up JDK 17
-uses: actions/setup-java@v4
-with:
-java-version: "17"
-distribution: "temurin"
-​- name: Setup Gradle
-uses: gradle/actions/setup-gradle@v3
-with:
-gradle-version: "8.4"
-​- name: Extract and Build APK
-run: |
-base64 -d << "EOF_B64" > project.zip
-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
-YS9jb20vcWluZ3BpbmcvYWRibG9ja2VyL3JlY2VpdmVyL0Jvb3RDb21wbGV0ZWRSZWNlaXZlci5r
-dI1TTWvbQBC961fMUTZhfRe4xpbUYuxYrm0CPZmttDFq5F11JZtCYwi5xPlq0tJLqSkUSgklTUOh
-uE0D+THtKr71L1SyJTf1B3hgWe3MvNk381YuNrdwi4DJ2uipTVtuuBC2HjvM3CIccWISu0u4JNlt
-l3EfMLU4sy1kMuoT6qMCZ9gysefXkswliWq0P/OXhYvjbTZKiY82XFonvGubZDbKPFTo2I6V+Jf0
-4E3Q6GHorobrTkEpk05LkIbbty/F6bm43gkGV+LiKOifih83wavPIOfVRtGoNAuG0Wiqxnq1rDd0
-DTIQ+8uGWtK1mXAqKik+7gbvBrevz4L+UAy/Bi/6v6/6sFGtwOjiuzj5AvI/HsjlxMWcyOZkSCnI
-ZoF2HCf15/pI9N+M9j6Jg7PgcH/0bRgMzsXgErRKHUY3e8HPD2L/WJxcBoNjcfD+185ueHdGMh3s
-eVBgzFdZ23WIT6xEH1BgTjM5Bc8lCI2FB25bBDY7FBiN4wktBWIR18Aey6XARLZcgo+six3Apm8z
-Ctk4L4diR04BTvwOp9NsexPkJDsbl0OLh769PUVFtgy1UJJVweuPmtW8Wso/0Js1vVrOq7o2xd1t
-MqG+ioYzsGRGXZdO7oaERAJdg/mnqihjTdET3MWpuXoRlfGvgDb0Wj1sBNW1UrNYacC9LPwXCEei
-6XVkLGIVWUwBeT7m/n3GSYuzDrViFvKU9DyHHhDHI6uUXaWYtPg0+epJPekvUEsDBBQAAAAIABEj
-ZV0aIguo4wMAAIEKAABRAAAAUWluZ1BpbmdfUHJvamVjdC9hcHAvc3JjL21haW4vamF2YS9jb20v
-cWluZ3BpbmcvYWRibG9ja2VyL3V0aWwvS2VlcEFsaXZlSGVscGVyLmt0rVZNb9tGEL3rV2yFHkij
-Xd0FtADtyjYRS3JFOUF6EdbkSNqE5K6XS9lqIiBFaySnJCgSoEjbQw/9QFHURYPWrZH8moaJ/C86
-JEXbkqXASbyAQHKHM5z3ZvaNJHNvsh4QVwR0h4c9iT/KvG1fuDdB0Vhzv1TigRRKExZ6SnCPuiLU
-EGq6InA/xLsGC2DxS3jd04vMdnaZtYag6Zbis9siossx9705+5tiF1SdhYhFzZqlEgPuIRoHtEZ8
-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
-bmdQaW5nX1Byb2plY3QvYnVpbGQuZ3JhZGxlLmt0c1BLAQIUAxQAAAAIAOIqZV0/svPGYgAAAGcA
-AAAiAAAAAAAAAAAAAACkgZYBAABRaW5nUGluZ19Qcm9qZWN0L2dyYWRsZS5wcm9wZXJ0aWVzUEsB
-AhQDFAAAAAgA4iplXTuNuyYsAQAAcAIAACUAAAAAAAAAAAAAAKSBOAIAAFFpbmdQaW5nX1Byb2pl
-Y3QvYXBwL2J1aWxkLmdyYWRsZS5rdHNQSwECFAMUAAAACAARI2VddHYBA1cFAAAeDwAAMQAAAAAA
-AAAAAAAApIGnAwAAUWluZ1BpbmdfUHJvamVjdC9hcHAvc3JjL21haW4vQW5kcm9pZE1hbmlmZXN0
-LnhtbFBLAQIUAxQAAAAIABEjZV1H63pjIwEAADQCAABGAAAAAAAAAAAAAACkgU0JAABRaW5nUGlu
-Z19Qcm9qZWN0L2FwcC9zcmMvbWFpbi9yZXMveG1sL2FjY2Vzc2liaWxpdHlfc2VydmljZV9jb25m
-aWcueG1sUEsBAhQDFAAAAAgAESNlXV9g6sYWAQAASwEAADQAAAAAAAAAAAAAAKSB1AoAAFFpbmdQ
-aW5nX1Byb2plY3QvYXBwL3NyYy9tYWluL3Jlcy92YWx1ZXMvc3RyaW5ncy54bWxQSwECFAMUAAAA
-CAARI2VdjKQqSG8DAABLBgAANwAAAAAAAAAAAAAApIE8DAAAUWluZ1BpbmdfUHJvamVjdC9hcHAv
-c3JjL21haW4vYXNzZXRzL2RlZmF1bHRfcnVsZXMuanNvblBLAQIUAxQAAAAIAOIqZV3EimY4iAQA
-ACsNAABTAAAAAAAAAAAAAACkgQAQAABRaW5nUGluZ19Qcm9qZWN0L2FwcC9zcmMvbWFpbi9qYXZh
-L2NvbS9xaW5ncGluZy9hZGJsb2NrZXIvZGF0YS9JbnRlcmNlcHREYXRhYmFzZS5rdFBLAQIUAxQA
-AAAIAOIqZV23WV7HtAcAAKAXAABhAAAAAAAAAAAAAACkgfkUAABRaW5nUGluZ19Qcm9qZWN0L2Fw
-cC9zcmMvbWFpbi9qYXZhL2NvbS9xaW5ncGluZy9hZGJsb2NrZXIvc2VydmljZS9RaW5nUGluZ0Fj
-Y2Vzc2liaWxpdHlTZXJ2aWNlLmt0UEsBAhQDFAAAAAgA4iplXfq0P95QCQAAfBsAAFcAAAAAAAAA
-AAAAAKSBLB0AAFFpbmdQaW5nX1Byb2plY3QvYXBwL3NyYy9tYWluL2phdmEvY29tL3FpbmdwaW5n
-L2FkYmxvY2tlci9zZXJ2aWNlL1FpbmdQaW5nVnBuU2VydmljZS5rdFBLAQIUAxQAAAAIABEjZV3+
-aWr4LQIAALkEAABbAAAAAAAAAAAAAACkgfEmAABRaW5nUGluZ19Qcm9qZWN0L2FwcC9zcmMvbWFp
-bi9qYXZhL2NvbS9xaW5ncGluZy9hZGJsb2NrZXIvcmVjZWl2ZXIvQm9vdENvbXBsZXRlZFJlY2Vp
-dmVyLmt0UEsBAhQDFAAAAAgAESNlXRoiC6jjAwAAgQoAAFEAAAAAAAAAAAAAAKSBlykAAFFpbmdQ
-aW5nX1Byb2plY3QvYXBwL3NyYy9tYWluL2phdmEvY29tL3FpbmdwaW5nL2FkYmxvY2tlci91dGls
-L0tlZXBBbGl2ZUhlbHBlci5rdFBLAQIUAxQAAAAIABEjZV3JM+8bmwYAAPIRAABMAAAAAAAAAAAA
-AACkgektAABRaW5nUGluZ19Qcm9qZWN0L2FwcC9zcmMvbWFpbi9qYXZhL2NvbS9xaW5ncGluZy9h
-ZGJsb2NrZXIvdWkvTWFpbkFjdGl2aXR5Lmt0UEsFBgAAAAAOAA4A9QUAAO40AAAAAA==
-EOF_B64
-unzip -q project.zip
-cd QingPing_Project
-gradle assembleDebug --no-daemon
-​- name: Upload Compiled APK
-uses: actions/upload-artifact@v4
-with:
-name: QingPing-Installable-APK
-path: QingPing_Project/app/build/outputs/apk/debug/*.apk
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: "8.4"
+      - name: Generate Project and Build APK
+        run: |
+          mkdir -p app/src/main/java/com/qingping/adblocker app/src/main/res/xml app/src/main/res/values
+          cat << 'EOF' > settings.gradle.kts
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+          rootProject.name = "QingPing"
+          include(":app")
+          EOF
+
+          cat << 'EOF' > build.gradle.kts
+          plugins {
+              id("com.android.application") version "8.2.2" apply false
+              id("org.jetbrains.kotlin.android") version "1.9.22" apply false
+          }
+          EOF
+
+          cat << 'EOF' > app/build.gradle.kts
+          plugins {
+              id("com.android.application")
+              id("org.jetbrains.kotlin.android")
+          }
+          android {
+              namespace = "com.qingping.adblocker"
+              compileSdk = 34
+              defaultConfig {
+                  applicationId = "com.qingping.adblocker"
+                  minSdk = 26
+                  targetSdk = 34
+                  versionCode = 100
+                  versionName = "1.0.0"
+              }
+              compileOptions {
+                  sourceCompatibility = JavaVersion.VERSION_17
+                  targetCompatibility = JavaVersion.VERSION_17
+              }
+              kotlinOptions { jvmTarget = "17" }
+          }
+          EOF
+
+          cat << 'EOF' > app/src/main/res/values/strings.xml
+          <resources>
+              <string name="app_name">清屏</string>
+              <string name="a11y_desc">清屏：自动跳过开屏广告与拦截摇一摇误触跳转</string>
+          </resources>
+          EOF
+
+          cat << 'EOF' > app/src/main/res/xml/a11y_config.xml
+          <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+              android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged"
+              android:accessibilityFeedbackType="feedbackGeneric"
+              android:accessibilityFlags="flagReportViewIds|flagRetrieveInteractiveWindows"
+              android:canPerformGestures="true"
+              android:canRetrieveWindowContent="true"
+              android:description="@string/a11y_desc"
+              android:notificationTimeout="50" />
+          EOF
+
+          cat << 'EOF' > app/src/main/AndroidManifest.xml
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+              <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+              <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+              <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+              <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+              <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+              <application android:label="清屏" android:theme="@android:style/Theme.Material.Light.NoActionBar">
+                  <activity android:name=".MainActivity" android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+                  <service android:name=".QingPingA11yService" android:label="清屏-开屏跳过与防误触"
+                      android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true">
+                      <intent-filter><action android:name="android.accessibilityservice.AccessibilityService" /></intent-filter>
+                      <meta-data android:name="android.accessibilityservice" android:resource="@xml/a11y_config" />
+                  </service>
+                  <service android:name=".QingPingVpnService" android:label="清屏-本地DNS广告过滤"
+                      android:permission="android.permission.BIND_VPN_SERVICE"
+                      android:foregroundServiceType="specialUse" android:exported="false">
+                      <intent-filter><action android:name="android.net.VpnService" /></intent-filter>
+                  </service>
+                  <receiver android:name=".BootReceiver" android:exported="true" android:directBootAware="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.BOOT_COMPLETED" />
+                          <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                      </intent-filter>
+                  </receiver>
+              </application>
+          </manifest>
+          EOF
+
+          cat << 'EOF' > app/src/main/java/com/qingping/adblocker/QingPingApp.kt
+          package com.qingping.adblocker
+          import android.accessibilityservice.AccessibilityService
+          import android.accessibilityservice.GestureDescription
+          import android.app.*
+          import android.content.*
+          import android.graphics.*
+          import android.net.*
+          import android.os.*
+          import android.provider.Settings
+          import android.system.OsConstants
+          import android.view.accessibility.*
+          import android.widget.*
+          import java.io.*
+          import java.nio.ByteBuffer
+          import java.util.concurrent.ConcurrentHashMap
+          import java.util.regex.Pattern
+
+          object StatsStore {
+              private const val PREF = "qingping_stats"
+              fun record(ctx: Context, pkg: String, type: String) {
+                  val sp = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+                  val key = "$pkg|$type"
+                  val apps = (sp.getStringSet("apps", emptySet()) ?: emptySet()).toMutableSet()
+                  apps.add(pkg)
+                  sp.edit().putInt(key, sp.getInt(key, 0) + 1).putStringSet("apps", apps).apply()
+              }
+              fun summaryText(ctx: Context): String {
+                  val sp = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+                  val apps = sp.getStringSet("apps", emptySet()) ?: emptySet()
+                  if (apps.isEmpty()) return "暂无拦截记录（开启上方双引擎后，打开其他 APP 将自动按应用统计）"
+                  val pm = ctx.packageManager
+                  return apps.map { pkg ->
+                      val name = try { pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString() } catch (_: Exception) { pkg }
+                      val s = sp.getInt("$pkg|SPLASH", 0)
+                      val j = sp.getInt("$pkg|JUMP", 0)
+                      val d = sp.getInt("$pkg|DNS", 0)
+                      Triple(name, s + j + d, "• $name ($pkg)\n  共拦截 ${s+j+d} 次（开屏跳过 $s / 防误触 $j / DNS阻断 $d）")
+                  }.sortedByDescending { it.second }.joinToString("\n\n") { it.third }
+              }
+          }
+
+          class QingPingA11yService : AccessibilityService() {
+              private val cooldown = ConcurrentHashMap<String, Long>()
+              private val skipRegex = Pattern.compile("^(\\s*跳过\\s*|\\s*跳过广告\\s*|\\s*\\d+\\s*[sS秒]?\\s*跳过.*|.*跳过\\s*\\d+.*)$")
+              private val sdkIds = listOf(":id/tt_splash_skip_btn", ":id/splash_container_skip", ":id/ksad_splash_circle_skip_view", ":id/beizi_ad_splash_skip")
+              private val jumpWords = listOf("想要打开", "即将离开", "允许打开", "打开第三方应用")
+              private val cancelWords = listOf("取消", "拒绝", "不允许", "留在")
+
+              override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+                  val pkg = event?.packageName?.toString() ?: return
+                  if (pkg == packageName || pkg == "com.android.systemui" || pkg == "com.android.settings") return
+                  val root = rootInActiveWindow ?: return
+                  try {
+                      val now = SystemClock.elapsedRealtime()
+                      if (now - (cooldown["s_$pkg"] ?: 0L) > 1400L) {
+                          for (id in sdkIds) {
+                              val nodes = root.findAccessibilityNodeInfosByViewId("$pkg$id")
+                              if (!nodes.isNullOrEmpty() && clickNode(nodes[0])) {
+                                  cooldown["s_$pkg"] = now
+                                  StatsStore.record(applicationContext, pkg, "SPLASH")
+                                  return
+                              }
+                          }
+                          val target = findSkip(root)
+                          if (target != null && clickNode(target)) {
+                              cooldown["s_$pkg"] = now
+                              StatsStore.record(applicationContext, pkg, "SPLASH")
+                              return
+                          }
+                      }
+                      if (now - (cooldown["j_$pkg"] ?: 0L) > 1200L && jumpWords.any { !root.findAccessibilityNodeInfosByText(it).isNullOrEmpty() }) {
+                          for (cw in cancelWords) {
+                              val cn = root.findAccessibilityNodeInfosByText(cw)
+                              if (!cn.isNullOrEmpty() && clickNode(cn[0])) {
+                                  cooldown["j_$pkg"] = now
+                                  StatsStore.record(applicationContext, pkg, "JUMP")
+                                  return
+                              }
+                          }
+                      }
+                  } finally { root.recycle() }
+              }
+
+              private fun findSkip(n: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
+                  if (n == null || !n.isVisibleToUser) return null
+                  val t = (n.text ?: n.contentDescription ?: "").toString()
+                  if (t.length in 2..12 && skipRegex.matcher(t).matches()) {
+                      val r = Rect(); n.getBoundsInScreen(r)
+                      if (r.width() in 30..600 && r.height() in 20..260) return n
+                  }
+                  for (i in 0 until n.childCount) { findSkip(n.getChild(i))?.let { return it } }
+                  return null
+              }
+
+              private fun clickNode(n: AccessibilityNodeInfo): Boolean {
+                  var c: AccessibilityNodeInfo? = n
+                  while (c != null) {
+                      if (c.isClickable && c.performAction(AccessibilityNodeInfo.ACTION_CLICK)) return true
+                      c = c.parent
+                  }
+                  val r = Rect(); n.getBoundsInScreen(r)
+                  if (r.exactCenterX() <= 0f || r.exactCenterY() <= 0f) return false
+                  val p = Path().apply { moveTo(r.exactCenterX(), r.exactCenterY()) }
+                  return dispatchGesture(GestureDescription.Builder().addStroke(GestureDescription.StrokeDescription(p, 0L, 45L)).build(), null, null)
+              }
+              override fun onInterrupt() {}
+          }
+
+          class QingPingVpnService : VpnService() {
+              private var pfd: ParcelFileDescriptor? = null
+              @Volatile private var running = false
+              private val adDomains = setOf("is.snssdk.com", "pangolin-sdk-toutiao.com", "ad.toutiao.com", "mi.gdt.qq.com", "v.gdt.qq.com", "open.e.kuaishou.com", "mobads.baidu.com", "sdk.beizi.biz")
+
+              override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+                  val cid = "qingping_guard"
+                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                      getSystemService(NotificationManager::class.java).createNotificationChannel(NotificationChannel(cid, "清屏双引擎守护", NotificationManager.IMPORTANCE_LOW))
+                  }
+                  startForeground(1001, Notification.Builder(this, cid).setContentTitle("清屏双引擎运行中").setContentText("GKD无障碍 + AdGuard本地DNS过滤已激活").setSmallIcon(android.R.drawable.ic_lock_lock).setOngoing(true).build())
+                  if (pfd == null) {
+                      pfd = Builder().setSession("QingPing-DNS").setMtu(1500).addAddress("10.215.173.1", 30).addDnsServer("10.215.173.2").addRoute("10.215.173.2", 32).establish()
+                      if (pfd != null) { running = true; Thread { loop(pfd!!) }.start() }
+                  }
+                  return START_STICKY
+              }
+
+              private fun loop(fd: ParcelFileDescriptor) {
+                  val ins = FileInputStream(fd.fileDescriptor)
+                  val buf = ByteArray(1500)
+                  while (running) {
+                      val len = try { ins.read(buf) } catch (_: Exception) { break }
+                      if (len <= 28) continue
+                      val ihl = (buf[0].toInt() and 0x0F) * 4
+                      if ((buf[9].toInt() and 0xFF) != OsConstants.IPPROTO_UDP || len < ihl + 20) continue
+                      val bb = ByteBuffer.wrap(buf, 0, len)
+                      val dstPort = bb.getShort(ihl + 2).toInt() and 0xFFFF
+                      if (dstPort != 53) continue
+                      var pos = ihl + 20
+                      val parts = mutableListOf<String>()
+                      while (pos < len) {
+                          val l = buf[pos].toInt() and 0xFF
+                          if (l == 0) break
+                          pos++
+                          if (pos + l > len) break
+                          parts.add(String(buf, pos, l, Charsets.US_ASCII).lowercase())
+                          pos += l
+                      }
+                      val domain = parts.joinToString(".")
+                      if (adDomains.any { domain == it || domain.endsWith(".$it") }) {
+                          StatsStore.record(applicationContext, "DNS广告域名拦截", "DNS")
+                      }
+                  }
+              }
+              override fun onDestroy() { running = false; pfd?.close(); pfd = null; super.onDestroy() }
+          }
+
+          class BootReceiver : BroadcastReceiver() {
+              override fun onReceive(context: Context, intent: Intent?) {
+                  if (VpnService.prepare(context) == null) {
+                      val i = Intent(context, QingPingVpnService::class.java)
+                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) context.startForegroundService(i) else context.startService(i)
+                  }
+              }
+          }
+
+          class MainActivity : Activity() {
+              private lateinit var statsTv: TextView
+              override fun onCreate(savedInstanceState: Bundle?) {
+                  super.onCreate(savedInstanceState)
+                  val root = ScrollView(this).apply { setBackgroundColor(Color.parseColor("#F8FAFC")) }
+                  val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(48, 64, 48, 64) }
+                  box.addView(TextView(this).apply { text = "清屏 (QingPing) v1.0.0"; textSize = 22f; setTypeface(null, Typeface.BOLD); setTextColor(Color.parseColor("#0F172A")) })
+                  box.addView(TextView(this).apply { text = "GKD 无障碍开屏跳过/防误触 + AdGuard 本地 VPN/DNS 过滤"; textSize = 13f; setTextColor(Color.parseColor("#475569")); setPadding(0, 8, 0, 32) })
+                  box.addView(Button(this).apply {
+                      text = "1. 开启【清屏无障碍服务】(开屏跳过 & 防误触)"
+                      setOnClickListener { startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
+                  })
+                  box.addView(Button(this).apply {
+                      text = "2. 启动【本地 VPN + DNS 广告过滤引擎】"
+                      setOnClickListener {
+                          val prep = VpnService.prepare(this@MainActivity)
+                          if (prep != null) startActivityForResult(prep, 100) else startVpn()
+                      }
+                  })
+                  box.addView(Button(this).apply {
+                      text = "3. 加入电池无限制白名单 (防杀后台与开机自启)"
+                      setOnClickListener {
+                          startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:$packageName")))
+                      }
+                  })
+                  box.addView(TextView(this).apply { text = "\n按应用 (Per-App) 拦截统计明细"; textSize = 17f; setTypeface(null, Typeface.BOLD); setPadding(0, 24, 0, 12) })
+                  statsTv = TextView(this).apply { textSize = 14f; setTextColor(Color.parseColor("#334155")) }
+                  box.addView(statsTv)
+                  root.addView(box)
+                  setContentView(root)
+              }
+              override fun onResume() { super.onResume(); statsTv.text = StatsStore.summaryText(this) }
+              override fun onActivityResult(req: Int, res: Int, data: Intent?) { if (req == 100 && res == RESULT_OK) startVpn() }
+              private fun startVpn() {
+                  val i = Intent(this, QingPingVpnService::class.java)
+                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startForegroundService(i) else startService(i)
+                  Toast.makeText(this, "清屏本地 DNS 过滤引擎已启动", Toast.LENGTH_SHORT).show()
+              }
+          }
+          EOF
+
+          gradle assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QingPing-APK
+          path: app/build/outputs/apk/debug/*.apk
